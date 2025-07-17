@@ -14,6 +14,11 @@
   "bin": {
     "phact": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phact-org/phact",
+    "directory": "packages/phact-cli"
+  },
   "scripts": {
     "build": "node scripts/clean.js && npx babel src --out-dir dist"
   },
