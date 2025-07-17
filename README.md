@@ -22,15 +22,21 @@ Follow these steps to get a new project up and running.
 1. Create a New Project
 
    Run the following command in your terminal, replacing <project-name> with the desired name for your project.
-   > phact create <project-name>
+   ```bash
+   phact create <project-name>
+   ```
    
 2. Build the Project
 
    Navigate into your project directory and run the build command.
-   > phact build
+   ```bash
+   phact build
+   ```
 
    Alternatively, you can use the npm script:
-   > npm run build
+   ```bash
+   npm run build
+   ```
 
    This process creates a `dist` folder containing the rendered React pages with Phact placeholders and the necessary JavaScript bundles.
 
