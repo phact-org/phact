@@ -1,0 +1,24 @@
+{
+    "name": "phact-org/phact",
+    "description": "The framework for building server-rendered React applications.",
+    "version": "0.1.0",
+    "keywords": [
+        "server-side-rendering",
+        "framework",
+        "react"
+    ],
+    "homepage": "https://github.com/phact-org/phact",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Omid",
+            "email": "ooo342mmm@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Phact\\Phact\\": "src/"
+        }
+    },
+    "require": {}
+}

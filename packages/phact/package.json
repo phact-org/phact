@@ -1,0 +1,35 @@
+{
+  "name": "@phact-org/phact",
+  "version": "0.1.0",
+  "description": "The framework for building server-rendered React applications.",
+  "keywords": [
+    "react",
+    "server-side-rendering",
+    "framework"
+  ],
+  "homepage": "https://github.com/phact-org/phact",
+  "bugs": {
+    "url": "https://github.com/phact-org/phact/issues"
+  },
+  "license": "MIT",
+  "author": "Omid",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./components": "./dist/components/index.js",
+    "./document": "./dist/document/index.js"
+  },
+  "scripts": {
+    "build": "node scripts/clean.js && npx babel src --out-dir dist"
+  },
+  "dependencies": {
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.28.0",
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1"
+  }
+}
