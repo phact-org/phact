@@ -50,6 +50,7 @@ jobs:
         working-directory: ${{ steps.find-dir.outputs.package_dir }}
         run: |
           npm ci
+          npm run build
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
