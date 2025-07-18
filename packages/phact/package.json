@@ -29,6 +29,7 @@
     "build": "node scripts/clean.js && npx babel src --out-dir dist"
   },
   "dependencies": {
+    "fs-extra": "^11.3.0",
     "react": "^19.1.0"
   },
   "devDependencies": {
