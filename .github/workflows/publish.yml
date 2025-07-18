@@ -43,6 +43,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@phact-org'
 
       - name: Install dependencies, build, and publish
         working-directory: ${{ steps.map-title-to-directory.outputs.package_dir }}
