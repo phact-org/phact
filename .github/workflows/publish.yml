@@ -1,0 +1,55 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-package:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse package name from tag
+        id: package-info
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          
+          PACKAGE_NAME=$(echo $TAG | rev | cut -d'@' -f2- | rev)
+          
+          echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
+          echo "Parsed package name: ${PACKAGE_NAME}"
+
+      - name: Find package directory
+        id: find-dir
+        run: |
+          PACKAGE_NAME=${{ steps.package-info.outputs.package_name }}
+
+          PACKAGE_JSON_PATH=$(find packages -maxdepth 2 -name package.json -exec grep -l "\"name\": \"${PACKAGE_NAME}\"" {} \;)
+
+          if [ -z "$PACKAGE_JSON_PATH" ]; then
+            echo "::error::Could not find a package.json file for package '${PACKAGE_NAME}'."
+            exit 1
+          fi
+
+          PACKAGE_DIR=$(dirname "${PACKAGE_JSON_PATH}")
+          echo "package_dir=${PACKAGE_DIR}" >> $GITHUB_OUTPUT
+          echo "Found package in directory: ${PACKAGE_DIR}"
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies, build, and publish
+        working-directory: ${{ steps.find-dir.outputs.package_dir }}
+        run: |
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
