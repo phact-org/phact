@@ -15,31 +15,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Parse package name from tag
-        id: package-info
+      - name: Map release title to package directory
+        id: map-title-to-directory
         run: |
-          TAG=${{ github.event.release.tag_name }}
-          
-          PACKAGE_NAME=$(echo $TAG | rev | cut -d'@' -f2- | rev)
-          
-          echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
-          echo "Parsed package name: ${PACKAGE_NAME}"
+          TITLE_PREFIX=$(echo "${{ github.event.release.name }}" | cut -d':' -f1 | xargs)
 
-      - name: Find package directory
-        id: find-dir
-        run: |
-          PACKAGE_NAME=${{ steps.package-info.outputs.package_name }}
+          case "$TITLE_PREFIX" in
+            "Phact")
+              PACKAGE_DIR="packages/phact"
+              ;;
+            "Phact CLI")
+              PACKAGE_DIR="packages/phact-cli"
+              ;;
+            "Phact PHP")
+              PACKAGE_DIR="packages/phact-php"
+              ;;
+            *)
+              echo "::error::Release title prefix '$TITLE_PREFIX' does not map to a known package."
+              exit 1
+              ;;
+          esac
 
-          PACKAGE_JSON_PATH=$(find packages -maxdepth 2 -name package.json -exec grep -l "\"name\": \"${PACKAGE_NAME}\"" {} \;)
-
-          if [ -z "$PACKAGE_JSON_PATH" ]; then
-            echo "::error::Could not find a package.json file for package '${PACKAGE_NAME}'."
-            exit 1
-          fi
-
-          PACKAGE_DIR=$(dirname "${PACKAGE_JSON_PATH}")
           echo "package_dir=${PACKAGE_DIR}" >> $GITHUB_OUTPUT
-          echo "Found package in directory: ${PACKAGE_DIR}"
+          echo "Mapped title prefix '${TITLE_PREFIX}' to directory: ${PACKAGE_DIR}"
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -47,8 +45,9 @@ jobs:
           node-version: '22.x'
 
       - name: Install dependencies, build, and publish
-        working-directory: ${{ steps.find-dir.outputs.package_dir }}
+        working-directory: ${{ steps.map-title-to-directory.outputs.package_dir }}
         run: |
+          echo "Preparing to publish from $(pwd)"
           npm ci
           npm run build
           npm publish --access public
