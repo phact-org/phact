@@ -2,11 +2,15 @@ name: Publish
 
 on:
   release:
-    types: [published]
+    types: [ published ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
 
 jobs:
   publish-package:
-    name: Publish to npm
+    name: Publish
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,14 +43,23 @@ jobs:
           echo "package_dir=${PACKAGE_DIR}" >> $GITHUB_OUTPUT
           echo "Mapped title prefix '${TITLE_PREFIX}' to directory: ${PACKAGE_DIR}"
 
+      - name: Get version from title
+        if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
+        id: get_version
+        run: |
+          VERSION=$(echo "${{ github.event.release.name }}" | cut -d': ' -f2 | xargs)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Setup Node.js environment
+        if: steps.map-title-to-directory.outputs.package_dir != 'packages/phact-php'
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@phact-org'
 
-      - name: Install dependencies, build, and publish
+      - name: Install dependencies, build, and publish to npm
+        if: steps.map-title-to-directory.outputs.package_dir != 'packages/phact-php'
         working-directory: ${{ steps.map-title-to-directory.outputs.package_dir }}
         run: |
           echo "Preparing to publish from $(pwd)"
@@ -55,3 +68,14 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Monorepo split for phact-php
+        if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
+        uses: danharrin/monorepo-split-github-action@v2
+        with:
+          package_directory: 'packages/phact-php'
+          repository_organization: 'phact-org'
+          repository_name: 'phact-php'
+          tag: v${{ env.VERSION }}
+          user_email: github-actions@github.com
+          user_name: GitHub Actions
