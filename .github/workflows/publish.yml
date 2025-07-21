@@ -47,6 +47,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(echo "${{ github.event.release.name }}" | cut -d': ' -f2 | xargs)
+          echo $VERSION
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Setup Node.js environment
@@ -75,6 +76,6 @@ jobs:
           package_directory: 'packages/phact-php'
           repository_organization: 'phact-org'
           repository_name: 'phact-php'
-          tag: v${{ env.VERSION }}
+          tag: ${{ env.VERSION }}
           user_email: github-actions@github.com
           user_name: GitHub Actions
