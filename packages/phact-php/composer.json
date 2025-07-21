@@ -1,7 +1,6 @@
 {
     "name": "phact-org/phact",
     "description": "The framework for building server-rendered React applications.",
-    "version": "0.1.0",
     "keywords": [
         "server-side-rendering",
         "framework",
