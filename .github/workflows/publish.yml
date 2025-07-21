@@ -46,7 +46,7 @@ jobs:
         if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
         id: get_version
         run: |
-          VERSION=$(echo "${{ github.event.release.name }}" | cut -d': ' -f2 | xargs)
+          VERSION=$(echo "${{ github.event.release.name }}" | awk -F': ' '{print $2}')
           echo $VERSION
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
