@@ -7,7 +7,6 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-
 jobs:
   publish-package:
     name: Publish
@@ -69,13 +68,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Update ownership
-        if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
-        run: sudo chown -R "$(whoami)" .
-
       - name: Monorepo split for phact-php
         if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
-        uses: symplify/monorepo-split-github-action@2.1
+        uses: "danharrin/monorepo-split-github-action@v2.3.0"
         with:
           package_directory: 'packages/phact-php'
           repository_organization: 'phact-org'
