@@ -13,14 +13,11 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Add safe directory for Git
-        run: git config --global --add safe.directory /github/workspace
 
       - name: Map release title to package directory
         id: map-title-to-directory
