@@ -69,6 +69,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Update ownership
+        if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
+        run: sudo chown -R "$(whoami)" .
+
       - name: Monorepo split for phact-php
         if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
         uses: symplify/monorepo-split-github-action@2.1
