@@ -71,7 +71,7 @@ jobs:
 
       - name: Monorepo split for phact-php
         if: steps.map-title-to-directory.outputs.package_dir == 'packages/phact-php'
-        uses: danharrin/monorepo-split-github-action@v2
+        uses: symplify/monorepo-split-github-action@2.1
         with:
           package_directory: 'packages/phact-php'
           repository_organization: 'phact-org'
