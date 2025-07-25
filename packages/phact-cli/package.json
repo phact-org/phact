@@ -1,6 +1,6 @@
 {
   "name": "@phact-org/phact-cli",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Command-line interface for the Phact framework",
   "keywords": [
     "phact-cli"
