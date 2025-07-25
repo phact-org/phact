@@ -25,7 +25,9 @@ function createComposerConfig(projectName) {
         "require": {
             "php": "^8.2",
             "phact-org/phact": "^0.1.0"
-        }
+        },
+        "minimum-stability": "dev",
+        "prefer-stable": true
     };
 }
 
