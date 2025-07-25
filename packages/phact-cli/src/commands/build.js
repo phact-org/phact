@@ -9,7 +9,7 @@ import fsExtra from 'fs-extra';
 import esbuild from 'esbuild';
 import chalk from 'chalk';
 import ora from 'ora';
-import {Document} from 'phact/document';
+import {Document} from '@phact-org/phact/document';
 
 
 const normalizePath = (filePath) => filePath.replace(/\\/g, '/');
