@@ -1,5 +1,5 @@
 import React from 'react';
-import {Head} from 'phact/components';
+import {Head} from '@phact-org/phact/components';
 
 function Index({props}) {
     return (

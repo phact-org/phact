@@ -1,6 +1,6 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import {Main} from 'phact/document';
+import {Main} from '@phact-org/phact/document';
 
 export function hydrate(PageComponent) {
     let dataRaw = document.getElementById('__PHACT_DATA__').textContent;

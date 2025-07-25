@@ -41,7 +41,7 @@ function createPackageConfig(projectName) {
             "build": "phact build"
         },
         "dependencies": {
-            "phact": "^0.1.0",
+            "@phact-org/phact": "^0.1.1",
             "react": "^19.1.0",
             "react-dom": "^19.1.0"
         },
